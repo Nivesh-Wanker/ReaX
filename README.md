@@ -31,5 +31,34 @@ It allows authenticated administrators to create flexible feedback forms (text, 
 ---
 
 ## 📁 Folder Structure
+reax/                       # Root of your Git repository
+├── frontend/               # ReactJS (Vite-based) frontend
+│   ├── src/                # App components, pages, hooks, etc.
+│   ├── public/             # Static assets (icons, index.html)
+│   ├── .env                # API base URL (e.g., VITE_API_BASE_URL)
+│   └── package.json        # Dependencies, scripts
+│
+├── backend/                # Spring Boot backend
+│   ├── src/                # Java source code
+│   │   └── main/java/...   # Controllers, Services, Models
+│   ├── resources/          # `application.properties`, static files
+│   ├── .env (optional)     # DB creds or token secrets
+│   └── pom.xml             # Maven config (or build.gradle)
+│
+├── docs/                   # Planning, architecture, flowcharts
+│   ├── ERD.png
+│   ├── architecture.md
+│   └── jira_guidelines.md
+│
+├── .github/                # GitHub Actions (CI/CD workflows)
+│   └── workflows/
+│       └── node.yml
+│       └── java.yml
+│
+├── .gitignore              # Global ignores (node_modules, target/, .env)
+├── README.md               # Full project guide
+└── docker-compose.yml      # Optional: Unified frontend+backend container
 
+
+## Git Branching Structure Followed
 <img width="757" alt="image" src="https://github.com/user-attachments/assets/da1901f2-9401-4225-9ac1-6365a156169f" />
