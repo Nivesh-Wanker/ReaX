@@ -62,4 +62,35 @@
   
   .signup-note a:hover {
     text-decoration: underline;
+<<<<<<< HEAD
+=======
+  }
+
+  .signup-error {
+    color: #ef4444;
+    font-size: 0.9rem;
+    margin-top: -0.25rem;
+    margin-bottom: 0.5rem;
+    text-align: left;
+  }
+  
+  .password-rules {
+    font-size: 0.85rem;
+    margin: 0.5rem 0 1rem;
+    color: #64748b;
+    text-align: left;
+  }
+  
+  .valid {
+    color: #22c55e; /* green */
+  }
+  
+  .invalid {
+    color: #ef4444; /* red */
+  }
+  
+  button:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+>>>>>>> 817b1690b2b37cddb9bab7625dbd3edc35ceebc3
   }
