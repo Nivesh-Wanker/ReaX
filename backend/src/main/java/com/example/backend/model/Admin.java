@@ -23,7 +23,7 @@ public class Admin {
     private String createdBy;
 
     private String updatedBy;
-
+    private boolean isAdmin;
     // private list<forms> forms;
 
 }
