@@ -7,21 +7,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.backend.dto.admin_dto;
-import com.example.backend.model.Admin;
-import com.example.backend.repository.TestDocRepository;
+import com.example.backend.dto.UserDto;
+import com.example.backend.model.User;
+import com.example.backend.repository.UserRepository;
 
 @Service
 public class AdminService {
-     @Autowired
-    TestDocRepository repo;
+    @Autowired
+    UserRepository repo;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     
 
-    public Admin mapDtoAdmin(admin_dto dto){
-        Admin doc=new Admin();
+    public User mapDtoAdmin(UserDto dto){
+        User doc=new User();
         doc.setId(UUID.randomUUID().toString());
         doc.setName(dto.getName());
         doc.setEmail(dto.getEmail());
@@ -33,8 +33,8 @@ public class AdminService {
         return doc;
     }
 
-    public ResponseEntity<String> addAdmin(admin_dto dto){
-            Admin doc= mapDtoAdmin(dto);
+    public ResponseEntity<String> addAdmin(UserDto dto){
+            User doc= mapDtoAdmin(dto);
             repo.save(doc);
             return ResponseEntity.ok("Admin added successfully");
     }

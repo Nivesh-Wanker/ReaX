@@ -8,11 +8,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-@Document(collection="admin")
+@Document(collection="user")
 @Data  // Generates getters, setters, toString, equals, hashCode
 @NoArgsConstructor // No-args constructor
 @AllArgsConstructor // All-args constructor
-public class Admin {
+public class User {
     @Id
     private String id;  
 

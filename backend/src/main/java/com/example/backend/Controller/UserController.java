@@ -10,33 +10,37 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.backend.dto.admin_dto;
-import com.example.backend.model.Admin;
-import com.example.backend.repository.TestDocRepository;
+import com.example.backend.dto.UserDto;
+import com.example.backend.model.User;
+import com.example.backend.repository.UserRepository;
 import com.example.backend.service.UserService;
 
 @RestController
 public class UserController {
     
     @Autowired
-    TestDocRepository repo;
+    UserRepository repo;
 
     @Autowired
     UserService service;
 
     @PostMapping("/adduser")
-        public void add_user(@RequestBody admin_dto dto){
+        public void add_user(@RequestBody UserDto dto){
             service.addUser(dto);
         }
     
     @GetMapping("/getuser")
-    public List<Admin> getAll(){
+    public List<User> getAll(){
         return repo.findAll();
     }
 
-    @GetMapping("/getuser/{id}")
+    @GetMapping("/getuserbyid/{id}")
      public void GetUserById(@PathVariable String id){
         service.GetuserById(id);
+    }
+    @GetMapping("/getuser/{email}")
+     public User GetUserByEmail(@PathVariable String email){
+       return service.GetuserByEmail(email);
     }
     @DeleteMapping("/delete/{id}")
      public String deleteById(@PathVariable String id){
