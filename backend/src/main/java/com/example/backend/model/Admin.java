@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data  // Generates getters, setters, toString, equals, hashCode
 @NoArgsConstructor // No-args constructor
 @AllArgsConstructor // All-args constructor
-public class TestDoc {
+public class Admin {
     @Id
     private String id;  
 
