@@ -1,0 +1,38 @@
+.home-container {
+    min-height: calc(100vh - 64px); /* full height minus navbar */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+    background: linear-gradient(135deg, white, white);
+  }
+  
+  .home-container h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+  }
+  
+  .home-container p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #333;
+  }
+  
+  .get-started-btn {
+    background-color: #14b8a6;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .get-started-btn:hover {
+    background-color: #14b8a6
+    ;
+  }

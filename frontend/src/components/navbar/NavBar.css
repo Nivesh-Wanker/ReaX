@@ -1,0 +1,83 @@
+.navbar {
+  background-color: #0d9488; /* Charcoal gray */
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  height: 64px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.navbar-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-btn {
+  background-color: #14b8a6; /* Teal */
+  color: white;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.nav-btn:hover {
+  background-color: #0d9488; /* Dark teal */
+}
+
+.nav-icon {
+  color: white;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-icon:hover {
+  color: #5eead4; /* light teal on hover */
+}
+
+.account-dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  min-width: 160px;
+  z-index: 1000;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 16px;
+  color: #1e293b;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f1f5f9;
+}
+
+.nav-icon {
+  color: white;
+  transition: color 0.2s;
+}
+
+.nav-icon:hover {
+  color: #5eead4;
+}
