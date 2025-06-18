@@ -16,6 +16,14 @@ import java.util.Date;
 
 public class JWTUtil{
     private static String secretKey = "ThisIsASecretKeyForOurReaXApplication";
+
+    /**
+     * Generates a JWT token with the given subject and role.
+     *
+     * @param name the subject (typically a username or identifier)
+     * @param role the user's role to include as a claim
+     * @return a signed JWT token with a 24-hour expiration
+     */
     public String generateToken(String name, String role){
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
         return Jwts.builder()
@@ -26,5 +34,53 @@ public class JWTUtil{
         .signWith(key,SignatureAlgorithm.HS256)
         .compact();
     }
+    
+     /**
+     * Validates the integrity and expiration of the given JWT token.
+     *
+     * @param token the JWT token to validate
+     * @return true if the token is valid; false otherwise
+     */
+    public boolean validateToken(String token){
+        try{
+            Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
+            Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
+            return true;
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            System.out.println("Token expired: " + e.getMessage());
+        } catch (io.jsonwebtoken.security.SignatureException e) {
+            System.out.println("Invalid signature: " + e.getMessage());
+        } catch (io.jsonwebtoken.MalformedJwtException e) {
+            System.out.println("Malformed token: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Invalid token: " + e.getMessage());
+        }
+        return false;
+    }
+
+    /**
+     * Extracts claims (payload) from the given JWT token.
+     *
+     * @param token the JWT token
+     * @return Claims object if successfully parsed; null if token is invalid
+     */
+    public Claims extractClaims(String token) {
+    try {
+        Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
+        return Jwts.parserBuilder()
+                   .setSigningKey(key)
+                   .build()
+                   .parseClaimsJws(token)
+                   .getBody();  
+    } catch (Exception e) {
+        System.out.println("Could not extract claims: " + e.getMessage());
+        return null;
+    }
+}
+
+
 }
 
