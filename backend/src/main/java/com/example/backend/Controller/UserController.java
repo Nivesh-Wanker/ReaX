@@ -3,6 +3,7 @@ package com.example.backend.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.dto.UserDto;
+import com.example.backend.dto.UserLoginDTO;
 import com.example.backend.model.User;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.UserService;
@@ -24,9 +26,9 @@ public class UserController {
     @Autowired
     UserService service;
 
-    @PostMapping("/adduser")
-        public void add_user(@RequestBody UserDto dto){
-            service.addUser(dto);
+    @PostMapping("/register")
+        public ResponseEntity<String> addUser(@RequestBody UserDto dto){
+            return service.addUser(dto);
         }
     
     @GetMapping("/getuser")
@@ -38,9 +40,9 @@ public class UserController {
      public void GetUserById(@PathVariable String id){
         service.GetuserById(id);
     }
-    @GetMapping("/getuser/{email}")
-     public User GetUserByEmail(@PathVariable String email){
-       return service.GetuserByEmail(email);
+    @PostMapping("/login")
+     public ResponseEntity<String> GetUserByEmail(@RequestBody UserLoginDTO dto){
+       return service.GetuserByEmail(dto);
     }
     @DeleteMapping("/delete/{id}")
      public String deleteById(@PathVariable String id){
@@ -48,6 +50,3 @@ public class UserController {
         return "deleted";
      }
     }
-
-
-
