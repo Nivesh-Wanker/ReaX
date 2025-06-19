@@ -8,9 +8,9 @@ function SignUp() {
     name: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [fieldsTouched, setFieldsTouched] = useState({});
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,11 +19,17 @@ function SignUp() {
   // Handle input changes and track touched fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
+
+    if (name === "confirmPassword") {
+      setConfirmPassword(value);
+    } else {
+      setFormValues({ ...formValues, [name]: value });
+    }
+
     setFieldsTouched({ ...fieldsTouched, [name]: true });
   };
 
-  // Validation functions
+  // Validation helpers
   const isValidPassword = (password) => ({
     minLength: password.length >= 8,
     hasUppercase: /[A-Z]/.test(password),
@@ -33,23 +39,23 @@ function SignUp() {
   });
 
   const isValidEmail = (email) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|org|net|edu)$/i.test(email);
 
   const isValidName = (name) =>
     /^[A-Za-z\s]+$/.test(name.trim());
 
-  // Extract validations
+  // Validation checks
   const passwordChecks = isValidPassword(formValues.password);
   const passwordStrong = Object.values(passwordChecks).every(Boolean);
   const passwordsMatch =
-    formValues.password && formValues.password === formValues.confirmPassword;
+    formValues.password && formValues.password === confirmPassword;
   const emailFormatValid = isValidEmail(formValues.email);
   const nameFormatValid = isValidName(formValues.name);
 
   const isFormValid =
     passwordStrong && passwordsMatch && emailFormatValid && nameFormatValid;
 
-  // Handle submit
+  // Submit handler
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -62,7 +68,7 @@ function SignUp() {
     setIsSubmitting(true);
 
     try {
-      await RegisterUser(formValues);
+      const response = await RegisterUser(formValues);
       navigate("/signin");
     } catch (error) {
       console.error("Error registering user:", error);
@@ -142,7 +148,7 @@ function SignUp() {
           type="password"
           name="confirmPassword"
           placeholder="Re-type Password"
-          value={formValues.confirmPassword}
+          value={confirmPassword}
           onChange={handleInputChange}
           required
         />

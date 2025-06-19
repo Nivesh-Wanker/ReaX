@@ -4,73 +4,89 @@ import { LoginUser } from "../../services/axiosConfig.js";
 import { useNavigate } from "react-router-dom";
 
 function SignIn() {
-  const [form, setForm] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  /* ---------------------------- state ---------------------------------- */
+  const [formValues, setFormValues] = useState({ email: "", password: "" });
+  const [fieldsTouched, setFieldsTouched] = useState({});
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  /* --------------------------- handlers -------------------------------- */
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    setFormValues({ ...formValues, [name]: value });
+    setFieldsTouched({ ...fieldsTouched, [name]: true });
   };
 
-  const handleSubmit = async (e) => {
+  const isValidEmail = (email) =>
+  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|org|net|edu)$/i.test(email);
+
+  const emailFormatValid = isValidEmail(formValues.email);
+  const passwordPresent  = formValues.password.length > 0;
+  const isFormValid      = emailFormatValid && passwordPresent;
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    // Frontend email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(form.email)) {
-      setError("Please enter a valid email address.");
+    if (!isFormValid) {
+      setSubmitError("Please fill in all fields correctly.");
       return;
     }
 
-    setLoading(true);
-    setError("");
+    setSubmitError("");
+    setIsSubmitting(true);
 
     try {
-      const response = await LoginUser(form);
-      console.log("Success:", response.data);
-      // TODO: Store auth token if returned (e.g. localStorage.setItem)
-      navigate("/dashboard"); // or wherever post-login route is
+      const response = await LoginUser(formValues); // <- API call
+      navigate("/dashboard"); // <- redirect on success
     } catch (error) {
-      console.error("Error while logging in:", error);
-      setError(
+      console.error("Login error:", error);
+      setSubmitError(
         error?.response?.data?.message || "Invalid credentials. Please try again."
       );
     } finally {
-      setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
+  /* --------------------------- JSX ------------------------------------- */
   return (
     <div className="signin-container">
       <h2>Sign In</h2>
-      <form className="signin-form" onSubmit={handleSubmit}>
+
+      <form className="signin-form" onSubmit={handleFormSubmit}>
+        {/* Email */}
         <input
           type="email"
           name="email"
-          value={form.email}
-          onChange={handleChange}
           placeholder="Email"
+          value={formValues.email}
+          onChange={handleInputChange}
           required
           autoFocus
-          aria-label="Email address"
         />
+        {fieldsTouched.email && !emailFormatValid && (
+          <p className="signin-error">Enter a valid email address</p>
+        )}
 
+        {/* Password */}
         <input
           type="password"
           name="password"
-          value={form.password}
-          onChange={handleChange}
           placeholder="Password"
+          value={formValues.password}
+          onChange={handleInputChange}
           required
-          aria-label="Password"
         />
+        {fieldsTouched.password && !passwordPresent && (
+          <p className="signin-error">Password cannot be empty</p>
+        )}
 
-        {error && <p className="signin-error">{error}</p>}
+        {/* Form-level error */}
+        {submitError && <p className="signin-error">{submitError}</p>}
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Signing In..." : "Sign In"}
+        <button type="submit" disabled={isSubmitting || !isFormValid}>
+          {isSubmitting ? "Signing In..." : "Sign In"}
         </button>
 
         <p className="signin-note">
