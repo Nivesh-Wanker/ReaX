@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-import React from "react";
-import { Link } from "react-router-dom";
-import "./Navbar.css";
-
-function Navbar() {
-=======
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
@@ -19,15 +12,10 @@ function Navbar() {
     setDropdownOpen(!dropdownOpen);
   };
 
->>>>>>> 817b1690b2b37cddb9bab7625dbd3edc35ceebc3
   return (
     <nav className="navbar">
       <div className="navbar-logo">ReaX</div>
       <div className="navbar-buttons">
-<<<<<<< HEAD
-        <Link to="/signin" className="nav-btn">Sign In</Link>
-        <Link to="/signup" className="nav-btn">Sign Up</Link>
-=======
         {isLoggedIn ? (
           <div className="account-dropdown">
           <FaUserCircle
@@ -47,7 +35,6 @@ function Navbar() {
         <Link to="/signin" className="nav-btn">Sign In</Link>
         <Link to="/signup" className="nav-btn">Sign Up</Link>
         </>)}
->>>>>>> 817b1690b2b37cddb9bab7625dbd3edc35ceebc3
       </div>
     </nav>
   );

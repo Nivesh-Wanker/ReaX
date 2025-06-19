@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./SignUp.css";
+import {RegisterUser} from "../../services/axiosConfig.js"
 
 function SignUp() {
   const [form, setForm] = useState({
@@ -45,17 +46,24 @@ function SignUp() {
     allPasswordValid && passwordsMatch && emailValid && nameValid;
 
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
-  
-      if (!formValid) {
-        setError("Please fill all fields correctly.");
-      } else {
-        setError("");
-        console.log("Submitted:", form);
-        // Call your API or continue signup logic
-      }
+    const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!formValid) {
+    setError("Please fill all fields correctly.");
+  } else {
+    setError("");
+
+    try {
+      const response = await RegisterUser(form);
+      console.log("Success:", response.data);
+    } catch (error) {
+      console.error("Error registering user:", error);
+      setError("Something went wrong. Please try again.");
+    }
+    }
   };
+
 
   return (
     <div className="signup-container">

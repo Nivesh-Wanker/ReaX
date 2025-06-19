@@ -62,8 +62,6 @@
   
   .signup-note a:hover {
     text-decoration: underline;
-<<<<<<< HEAD
-=======
   }
 
   .signup-error {
@@ -92,5 +90,4 @@
   button:disabled {
     background-color: #94a3b8;
     cursor: not-allowed;
->>>>>>> 817b1690b2b37cddb9bab7625dbd3edc35ceebc3
   }

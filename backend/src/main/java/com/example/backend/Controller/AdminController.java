@@ -15,6 +15,8 @@ import com.example.backend.model.Admin;
 import com.example.backend.repository.TestDocRepository;
 import com.example.backend.service.mapdtoUser;
 
+
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 public class AdminController {
     
