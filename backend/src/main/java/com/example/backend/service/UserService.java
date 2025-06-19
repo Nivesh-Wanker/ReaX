@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.example.backend.dto.ResponseDTO;
 import com.example.backend.dto.UserDto;
 import com.example.backend.dto.UserLoginDTO;
 import com.example.backend.model.User;
@@ -32,24 +33,34 @@ import com.example.backend.repository.UserRepository;
         doc.setUpdatedBy(dto.getName());
         return doc;
     }
+
+    private UserDto mapUserToDto(User user) {
+    UserDto dto = new UserDto();
+    dto.setId(user.getId());
+    dto.setName(user.getName());
+    dto.setEmail(user.getEmail());
+    // Add other non-sensitive fields
+    return dto;
+}
+
     
-    public ResponseEntity<String> addUser(UserDto dto){
+    public ResponseDTO addUser(UserDto dto){
         User matchedUser = repo.findAll().stream()
         .filter(u -> u.getEmail().equals(dto.getEmail()))
         .findFirst()
         .orElse(null);
-            // User doc= mapDtoUser(dto);
-            // repo.save(doc);
-        System.out.println(matchedUser + "check variable");
+            ResponseDTO rdto= new ResponseDTO();
         if (matchedUser == null) {
             User doc= mapDtoUser(dto);
             repo.save(doc);
-            return ResponseEntity.ok("Admin added");
+            //return ResponseEntity.ok("Admin added");
+            rdto.setMessage("User added");
+            rdto.setUser(mapUserToDto(doc));
         } 
         else {
-            System.out.println("inside else block");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User Already exists");
+            rdto.setMessage("User Already exists");
         }
+        return rdto;
     }
 
     public ResponseEntity<User> GetuserById(@PathVariable String id){
@@ -58,19 +69,22 @@ import com.example.backend.repository.UserRepository;
                .orElse(ResponseEntity.notFound() // → 404 if id not present
                                         .build());
     }
-    public ResponseEntity<String> GetuserByEmail(UserLoginDTO dto){
-        User matchedUser = repo.findAll().stream()
+
+
+    public ResponseDTO GetuserByEmail(UserLoginDTO dto){
+        User user=  repo.findAll().stream()
         .filter(u -> u.getEmail().equals(dto.getEmail()) &&
                      passwordEncoder.matches(dto.getPassword(), u.getPassword()))
         .findFirst()
         .orElse(null);
-
-    if (matchedUser != null) {
-        return ResponseEntity.ok("Login successful");
+        ResponseDTO rdto= new ResponseDTO();
+    if (user != null) {
+        rdto.setMessage("login success");
+        rdto.setUser(mapUserToDto(user));
     } else {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                             .body("Invalid email or password");
+        rdto.setMessage("username or password incorrect");
     }
+    return rdto;
 }
     }
 
@@ -82,5 +96,3 @@ import com.example.backend.repository.UserRepository;
 
 // Admin:-
 // /register_admin  - keep is_admin as true
-
-
