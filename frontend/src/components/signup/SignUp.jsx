@@ -1,169 +1,158 @@
 import React, { useState } from "react";
 import "./SignUp.css";
-import { RegisterUser } from "../../services/axiosConfig.js";
+import { RegisterUser } from "../../services/axiosConfig";
 import { useNavigate } from "react-router-dom";
 
 function SignUp() {
+  /* ----------------------- state ----------------------- */
   const [formValues, setFormValues] = useState({
     name: "",
     email: "",
     password: "",
   });
-
   const [confirmPassword, setConfirmPassword] = useState("");
   const [fieldsTouched, setFieldsTouched] = useState({});
-  const [submitError, setSubmitError] = useState("");
+  const [submitError, setSubmitError] = useState("");            
+  const [emailError, setEmailError] = useState("");              
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  // Handle input changes and track touched fields
+  /* ------------------- input handler ------------------- */
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "confirmPassword") {
-      setConfirmPassword(value);
-    } else {
-      setFormValues({ ...formValues, [name]: value });
-    }
+    if (name === "confirmPassword") setConfirmPassword(value);
+    else setFormValues((prev) => ({ ...prev, [name]: value }));
 
-    setFieldsTouched({ ...fieldsTouched, [name]: true });
+    setFieldsTouched((prev) => ({ ...prev, [name]: true }));
+    if (name === "email") setEmailError("");                    
+    if (submitError) setSubmitError("");
   };
 
-  // Validation helpers
-  const isValidPassword = (password) => ({
-    minLength: password.length >= 8,
-    hasUppercase: /[A-Z]/.test(password),
-    hasLowercase: /[a-z]/.test(password),
-    hasNumber: /[0-9]/.test(password),
-    hasSpecialChar: /[^A-Za-z0-9]/.test(password),
+  /* ------------------- validation ---------------------- */
+  const isValidEmail = (email) =>
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+  const isValidName = (name) => /^[A-Za-z\s]+$/.test(name.trim());
+  const passwordRules = (p) => ({
+    minLen: p.length >= 8,
+    upper: /[A-Z]/.test(p),
+    lower: /[a-z]/.test(p),
+    num: /[0-9]/.test(p),
+    special: /[^A-Za-z0-9]/.test(p),
   });
 
-  const isValidEmail = (email) =>
-  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|org|net|edu)$/i.test(email);
+  const pwdChecks      = passwordRules(formValues.password);
+  const pwdStrong      = Object.values(pwdChecks).every(Boolean);
+  const pwMatch        = formValues.password && formValues.password === confirmPassword;
+  const emailValid     = isValidEmail(formValues.email);
+  const nameValid      = isValidName(formValues.name);
+  const formValid      = pwdStrong && pwMatch && emailValid && nameValid;
 
-  const isValidName = (name) =>
-    /^[A-Za-z\s]+$/.test(name.trim());
-
-  // Validation checks
-  const passwordChecks = isValidPassword(formValues.password);
-  const passwordStrong = Object.values(passwordChecks).every(Boolean);
-  const passwordsMatch =
-    formValues.password && formValues.password === confirmPassword;
-  const emailFormatValid = isValidEmail(formValues.email);
-  const nameFormatValid = isValidName(formValues.name);
-
-  const isFormValid =
-    passwordStrong && passwordsMatch && emailFormatValid && nameFormatValid;
-
-  // Submit handler
-  const handleFormSubmit = async (e) => {
+  /* ------------------- submit -------------------------- */
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!isFormValid) {
-      setSubmitError("Please fill all fields correctly.");
+    if (!formValid) {
+      setSubmitError("Please correct the highlighted errors.");
       return;
     }
 
-    setSubmitError("");
     setIsSubmitting(true);
+    setSubmitError("");
+    setEmailError("");
 
     try {
-      const response = await RegisterUser(formValues);
-      navigate("/signin");
-    } catch (error) {
-      console.error("Error registering user:", error);
-      setSubmitError(
-        error?.response?.data?.message || "Something went wrong. Please try again."
-      );
+      await RegisterUser(formValues);          
+      navigate("/dashboard");
+    } catch (err) {
+      const { status, data } = err.response || {};
+      if (status === 409 || data?.message?.includes("duplicate")) {
+        setEmailError("This email is already registered.");
+      } else {
+        setSubmitError(data?.message || "Something went wrong. Try again.");
+      }
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  /* --------------------- JSX --------------------------- */
   return (
     <div className="signup-container">
       <h2>Sign Up</h2>
 
-      <form className="signup-form" onSubmit={handleFormSubmit}>
+      <form className="signup-form" onSubmit={handleSubmit}>
         {/* Name */}
         <input
-          type="text"
           name="name"
           placeholder="Full Name"
           value={formValues.name}
           onChange={handleInputChange}
           required
         />
-        {fieldsTouched.name && formValues.name && !nameFormatValid && (
-          <p className="signup-error">
-            Name cannot contain special characters or numbers
-          </p>
+        {fieldsTouched.name && formValues.name && !nameValid && (
+          <p className="signup-error">Name can’t contain numbers or symbols</p>
         )}
 
         {/* Email */}
         <input
-          type="email"
           name="email"
           placeholder="Email"
           value={formValues.email}
           onChange={handleInputChange}
           required
         />
-        {fieldsTouched.email && !emailFormatValid && (
+        {emailError && <p className="signup-error">{emailError}</p>}
+        {fieldsTouched.email && !emailError && !emailValid && (
           <p className="signup-error">Enter a valid email address</p>
         )}
 
         {/* Password */}
         <input
-          type="password"
           name="password"
+          type="password"
           placeholder="Password"
           value={formValues.password}
           onChange={handleInputChange}
           required
         />
-
         {fieldsTouched.password && (
           <div className="password-rules">
-            <p className={passwordChecks.minLength ? "valid" : "invalid"}>
-              • At least 8 characters
+            <p className={pwdChecks.minLen ? "valid" : "invalid"}>
+              • Password must be at least 8 characters long
             </p>
-            <p className={passwordChecks.hasUppercase ? "valid" : "invalid"}>
-              • One uppercase letter
+            <p className={pwdChecks.upper ? "valid" : "invalid"}>
+              • Must include at least one uppercase letter (A–Z)
             </p>
-            <p className={passwordChecks.hasLowercase ? "valid" : "invalid"}>
-              • One lowercase letter
+            <p className={pwdChecks.lower ? "valid" : "invalid"}>
+              • Must include at least one lowercase letter (a–z)
             </p>
-            <p className={passwordChecks.hasNumber ? "valid" : "invalid"}>
-              • One number
+            <p className={pwdChecks.num ? "valid" : "invalid"}>
+              • Must include at least one number (0–9)
             </p>
-            <p className={passwordChecks.hasSpecialChar ? "valid" : "invalid"}>
-              • One special character (e.g. @, !, #)
+            <p className={pwdChecks.special ? "valid" : "invalid"}>
+              • Must include at least one special character (e.g. @, #, $, !)
             </p>
           </div>
         )}
 
+
         {/* Confirm Password */}
         <input
-          type="password"
           name="confirmPassword"
+          type="password"
           placeholder="Re-type Password"
           value={confirmPassword}
           onChange={handleInputChange}
           required
         />
-        {fieldsTouched.confirmPassword && !passwordsMatch && (
+        {fieldsTouched.confirmPassword && !pwMatch && (
           <p className="signup-error">Passwords do not match</p>
         )}
 
-        {/* Submit Error */}
         {submitError && <p className="signup-error">{submitError}</p>}
 
-        <button
-          type="submit"
-          disabled={isSubmitting || !isFormValid}
-        >
-          {isSubmitting ? "Creating Account..." : "Sign Up"}
+        <button type="submit" disabled={isSubmitting || !formValid}>
+          {isSubmitting ? "Creating…" : "Sign Up"}
         </button>
 
         <p className="signup-note">
