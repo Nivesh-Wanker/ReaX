@@ -1,143 +1,163 @@
 import React, { useState } from "react";
 import "./SignUp.css";
-import {RegisterUser} from "../../services/axiosConfig.js"
+import { RegisterUser } from "../../services/axiosConfig.js";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
-  const [form, setForm] = useState({
+  const [formValues, setFormValues] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
 
-  const [touched, setTouched] = useState({});
-  const [error, setError] = useState("");
+  const [fieldsTouched, setFieldsTouched] = useState({});
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  // Handle input changes and track touched fields
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-    setTouched({ ...touched, [name]: true });
+    setFormValues({ ...formValues, [name]: value });
+    setFieldsTouched({ ...fieldsTouched, [name]: true });
   };
 
-  const validatePassword = (password) => {
-    return {
-      minLength: password.length >= 8,
-      upper: /[A-Z]/.test(password),
-      lower: /[a-z]/.test(password),
-      number: /[0-9]/.test(password),
-      special: /[^A-Za-z0-9]/.test(password),
-    };
-  };
+  // Validation functions
+  const isValidPassword = (password) => ({
+    minLength: password.length >= 8,
+    hasUppercase: /[A-Z]/.test(password),
+    hasLowercase: /[a-z]/.test(password),
+    hasNumber: /[0-9]/.test(password),
+    hasSpecialChar: /[^A-Za-z0-9]/.test(password),
+  });
 
-  const validateEmail = (email) =>
+  const isValidEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  const validateName = (name) =>
+  const isValidName = (name) =>
     /^[A-Za-z\s]+$/.test(name.trim());
 
+  // Extract validations
+  const passwordChecks = isValidPassword(formValues.password);
+  const passwordStrong = Object.values(passwordChecks).every(Boolean);
+  const passwordsMatch =
+    formValues.password && formValues.password === formValues.confirmPassword;
+  const emailFormatValid = isValidEmail(formValues.email);
+  const nameFormatValid = isValidName(formValues.name);
 
-  const passwordValidations = validatePassword(form.password);
-  const allPasswordValid = Object.values(passwordValidations).every(Boolean);
-  const passwordsMatch = form.password && form.password === form.confirmPassword;
-  const emailValid = validateEmail(form.email);
-  const nameValid = validateName(form.name);
+  const isFormValid =
+    passwordStrong && passwordsMatch && emailFormatValid && nameFormatValid;
 
-  const formValid =
-    allPasswordValid && passwordsMatch && emailValid && nameValid;
+  // Handle submit
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
 
+    if (!isFormValid) {
+      setSubmitError("Please fill all fields correctly.");
+      return;
+    }
 
-    const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  if (!formValid) {
-    setError("Please fill all fields correctly.");
-  } else {
-    setError("");
+    setSubmitError("");
+    setIsSubmitting(true);
 
     try {
-      const response = await RegisterUser(form);
-      console.log("Success:", response.data);
+      await RegisterUser(formValues);
+      navigate("/signin");
     } catch (error) {
       console.error("Error registering user:", error);
-      setError("Something went wrong. Please try again.");
-    }
+      setSubmitError(
+        error?.response?.data?.message || "Something went wrong. Please try again."
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
 
   return (
     <div className="signup-container">
       <h2>Sign Up</h2>
-      <form className="signup-form" onSubmit={handleSubmit}>
+
+      <form className="signup-form" onSubmit={handleFormSubmit}>
+        {/* Name */}
         <input
           type="text"
           name="name"
           placeholder="Full Name"
-          value={form.name}
-          onChange={handleChange}
+          value={formValues.name}
+          onChange={handleInputChange}
           required
         />
-        {touched.name && !nameValid && (
-          <p className="signup-error">Name cannot contain special characters or numbers</p>
+        {fieldsTouched.name && formValues.name && !nameFormatValid && (
+          <p className="signup-error">
+            Name cannot contain special characters or numbers
+          </p>
         )}
+
+        {/* Email */}
         <input
           type="email"
           name="email"
           placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
+          value={formValues.email}
+          onChange={handleInputChange}
           required
         />
-        {touched.email && !emailValid && (
+        {fieldsTouched.email && !emailFormatValid && (
           <p className="signup-error">Enter a valid email address</p>
         )}
 
+        {/* Password */}
         <input
           type="password"
           name="password"
           placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
+          value={formValues.password}
+          onChange={handleInputChange}
           required
         />
 
-        {touched.password && (
+        {fieldsTouched.password && (
           <div className="password-rules">
-            <p className={passwordValidations.minLength ? "valid" : "invalid"}>
+            <p className={passwordChecks.minLength ? "valid" : "invalid"}>
               • At least 8 characters
             </p>
-            <p className={passwordValidations.upper ? "valid" : "invalid"}>
+            <p className={passwordChecks.hasUppercase ? "valid" : "invalid"}>
               • One uppercase letter
             </p>
-            <p className={passwordValidations.lower ? "valid" : "invalid"}>
+            <p className={passwordChecks.hasLowercase ? "valid" : "invalid"}>
               • One lowercase letter
             </p>
-            <p className={passwordValidations.number ? "valid" : "invalid"}>
+            <p className={passwordChecks.hasNumber ? "valid" : "invalid"}>
               • One number
             </p>
-            <p className={passwordValidations.special ? "valid" : "invalid"}>
+            <p className={passwordChecks.hasSpecialChar ? "valid" : "invalid"}>
               • One special character (e.g. @, !, #)
             </p>
           </div>
         )}
 
+        {/* Confirm Password */}
         <input
           type="password"
           name="confirmPassword"
           placeholder="Re-type Password"
-          value={form.confirmPassword}
-          onChange={handleChange}
+          value={formValues.confirmPassword}
+          onChange={handleInputChange}
           required
         />
-
-        {touched.confirmPassword && !passwordsMatch && (
+        {fieldsTouched.confirmPassword && !passwordsMatch && (
           <p className="signup-error">Passwords do not match</p>
         )}
 
-        {error && <p className="signup-error">{error}</p>}
+        {/* Submit Error */}
+        {submitError && <p className="signup-error">{submitError}</p>}
 
-        <button type="submit" disabled={!allPasswordValid || !passwordsMatch}>
-          Sign Up
+        <button
+          type="submit"
+          disabled={isSubmitting || !isFormValid}
+        >
+          {isSubmitting ? "Creating Account..." : "Sign Up"}
         </button>
 
         <p className="signup-note">
