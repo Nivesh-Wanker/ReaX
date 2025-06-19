@@ -3,6 +3,7 @@ package com.example.backend.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.backend.dto.ResponseDTO;
 import com.example.backend.dto.UserDto;
 import com.example.backend.dto.UserLoginDTO;
 import com.example.backend.model.User;
@@ -26,10 +28,7 @@ public class UserController {
     @Autowired
     UserService service;
 
-    @PostMapping("/register")
-        public ResponseEntity<String> addUser(@RequestBody UserDto dto){
-            return service.addUser(dto);
-        }
+    
     
     @GetMapping("/getuser")
     public List<User> getAll(){
@@ -40,10 +39,7 @@ public class UserController {
      public void GetUserById(@PathVariable String id){
         service.GetuserById(id);
     }
-    @PostMapping("/login")
-     public ResponseEntity<String> GetUserByEmail(@RequestBody UserLoginDTO dto){
-       return service.GetuserByEmail(dto);
-    }
+    
     @DeleteMapping("/delete/{id}")
      public String deleteById(@PathVariable String id){
         repo.deleteById(id);
