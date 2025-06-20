@@ -36,6 +36,7 @@ public class securityConfig {
         config.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // ✅ Your React app
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("*"));
+        config.setExposedHeaders(Arrays.asList("Authorization"));
         config.setAllowCredentials(true); // Needed if sending cookies or headers like Authorization
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
