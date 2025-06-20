@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Settings.css";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth} from "../../contexts/AuthContext"
 import { ChangeUserDetails } from "../../services/axiosConfig";
 
 function Settings() {
