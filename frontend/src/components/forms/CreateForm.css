@@ -1,0 +1,86 @@
+.create-form-container {
+    padding: 2rem;
+    margin: auto;
+    background-color: #f9fafb;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .create-form-container h2 {
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #0f766e;
+  }
+  
+  .add-field-btn,
+  .save-form-btn {
+    padding: 0.6rem 1.2rem;
+    font-weight: bold;
+    color: white;
+    background-color: #14b8a6;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 1rem 0;
+    display: block;
+    width: 100%;
+  }
+  
+  .add-field-btn:hover,
+  .save-form-btn:hover {
+    background-color: #0d9488;
+  }
+  
+  .form-fields-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background-color: white;
+  }
+  
+  .form-field input,
+  .form-field select {
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  
+  .delete-btn {
+    padding: 0.4rem 0.8rem;
+    background-color: #ef4444;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    align-self: flex-end;
+    cursor: pointer;
+  }
+  
+  .delete-btn:hover {
+    background-color: #dc2626;
+  }
+  
+  .empty-text {
+    text-align: center;
+    color: #6b7280;
+    margin-top: 1rem;
+  }
+
+  .create-form-layout {
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .builder-section {
+    flex: 1;
+  }
