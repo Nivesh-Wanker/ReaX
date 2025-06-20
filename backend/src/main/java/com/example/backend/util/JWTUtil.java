@@ -1,5 +1,6 @@
 package com.example.backend.util;
 
+import org.springframework.stereotype.Component;
 import java.util.*;
 // For JWT creation and parsing
 import io.jsonwebtoken.Jwts;
@@ -13,7 +14,7 @@ import java.security.Key;
 // For setting issued and expiration time
 import java.util.Date;
 
-
+@Component
 public class JWTUtil{
     private static String secretKey = "ThisIsASecretKeyForOurReaXApplication";
 

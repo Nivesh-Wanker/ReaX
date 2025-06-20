@@ -1,0 +1,81 @@
+.form-preview-container {
+    flex: 1;
+    padding: 1.5rem;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    overflow: visible;
+  }
+  
+  .form-preview h3 {
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    color: #0d9488;
+    font-weight: 600;
+  }
+  
+  .form-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  
+  .form-preview-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0.75rem 1rem;
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+  }
+  
+  .form-preview-item label {
+    font-weight: 500;
+    width: 200px;
+    color: #333;
+  }
+  
+  .form-preview-item input,
+  .form-preview-item textarea,
+  .form-preview-item select {
+    flex: 1;
+    padding: 0.6rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    appearance: auto;
+    position: relative;
+    z-index: 10;
+    background-color: white;
+  }
+  
+  .rating-stars span {
+    font-size: 1.2rem;
+    margin-right: 4px;
+  }
+  
+  .form-preview-item .rating-stars {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  
+  .form-preview-item .radio-options,
+  .form-preview-item .checkbox-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+  }
+  
+  .radio-options label,
+  .checkbox-options label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 400;
+    color: #444;
+  }
+  

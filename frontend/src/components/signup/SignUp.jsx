@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../../hooks/useAuth";
 import "./SignUp.css";
 import { RegisterUser } from "../../services/axiosConfig";
 import { useNavigate } from "react-router-dom";
+import { extractToken } from "../../utils/auth";
 
 function SignUp() {
   /* ----------------------- state ----------------------- */
@@ -10,12 +12,21 @@ function SignUp() {
     email: "",
     password: "",
   });
+
+  const { logout } = useAuth();
   const [confirmPassword, setConfirmPassword] = useState("");
   const [fieldsTouched, setFieldsTouched] = useState({});
   const [submitError, setSubmitError] = useState("");            
   const [emailError, setEmailError] = useState("");              
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
+
+  /* ------------------- logout when visited this page ------------------- */
+  useEffect(() => {
+    logout(); // auto-logout on visiting this page
+  }, []);
+  /* --------------------------------------------------------------------- */
 
   /* ------------------- input handler ------------------- */
   const handleInputChange = (e) => {
@@ -30,8 +41,22 @@ function SignUp() {
   };
 
   /* ------------------- validation ---------------------- */
-  const isValidEmail = (email) =>
-    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+  const allowedDomains = [
+    "gmail.com",
+    "yahoo.com",
+    "outlook.com",
+    "icloud.com",
+    "organization.org",
+    "ucf.edu"
+  ];
+  const isValidEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+    const match = email.match(emailRegex);
+    if (!match) return false;
+    const domain = match[1].toLowerCase();
+    return allowedDomains.includes(domain);
+  };
+  
   const isValidName = (name) => /^[A-Za-z\s]+$/.test(name.trim());
   const passwordRules = (p) => ({
     minLen: p.length >= 8,
@@ -61,8 +86,27 @@ function SignUp() {
     setEmailError("");
 
     try {
-      await RegisterUser(formValues);          
-      navigate("/dashboard");
+      const response = await RegisterUser(formValues);
+      const token = extractToken(response.headers);
+      const user = response.data.user;
+      
+      ///// Debugging messages///////////
+      console.log(response, "response");
+      console.log(token, "token");
+      console.log(user,"user details");
+      ///////////////////////////////////
+      
+      if (token && user) {
+        login({ token, user });
+        console.log("move to dashboard success");
+        navigate("/user/dashboard");
+      } else {
+        if (!user) {
+          setSubmitError("User information missing from server.");
+          return;
+        }
+        setSubmitError("Missing authentication token from server.");
+      }
     } catch (err) {
       const { status, data } = err.response || {};
       if (status === 409 || data?.message?.includes("duplicate")) {

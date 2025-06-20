@@ -26,7 +26,7 @@ import com.example.backend.repository.UserRepository;
         doc.setId(UUID.randomUUID().toString());
         doc.setName(dto.getName());
         doc.setEmail(dto.getEmail());
-        doc.setAdmin(false);
+        dto.setAdmin(dto.isAdmin()); 
         String encryptedPassword = passwordEncoder.encode(dto.getPassword());
         doc.setPassword(encryptedPassword);
         doc.setCreatedBy(dto.getName());

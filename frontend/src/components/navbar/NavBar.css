@@ -34,50 +34,51 @@
   background-color: #0d9488; /* Dark teal */
 }
 
-.nav-icon {
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* spacing between name and icon */
   color: white;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.nav-icon:hover {
-  color: #5eead4; /* light teal on hover */
-}
-
-.account-dropdown {
-  position: relative;
   cursor: pointer;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.user-name {
+  margin: 0;
+}
+
+.user-icon {
+  color: white;
+}
+
+.navbar-user-wrapper {
+  position: relative;
 }
 
 .dropdown-menu {
   position: absolute;
-  top: 40px;
+  top: 100%;
   right: 0;
+  margin-top: 0.5rem;
   background-color: white;
-  border: 1px solid #e2e8f0;
+  color: black;
   border-radius: 6px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  min-width: 160px;
-  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 140px;
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  z-index: 999;
 }
 
 .dropdown-item {
-  display: block;
-  padding: 10px 16px;
-  color: #1e293b;
+  padding: 0.75rem 1rem;
   text-decoration: none;
-  transition: background-color 0.2s;
+  color: #333;
+  white-space: nowrap;
+  display: block; /* Ensure each item takes a full row */
 }
 
 .dropdown-item:hover {
-  background-color: #f1f5f9;
-}
-
-.nav-icon {
-  color: white;
-  transition: color 0.2s;
-}
-
-.nav-icon:hover {
-  color: #5eead4;
+  background-color: #f0f0f0;
 }
