@@ -25,10 +25,10 @@ public class JWTUtil{
      * @param role the user's role to include as a claim
      * @return a signed JWT token with a 24-hour expiration
      */
-    public String generateToken(String name, String role){
+    public String generateToken(String email, String role){
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
         return Jwts.builder()
-        .setSubject(name)
+        .setSubject(email)
         .claim("role",role)
         .setIssuedAt(new Date())
         .setExpiration(new Date(System.currentTimeMillis() + 86400000))
