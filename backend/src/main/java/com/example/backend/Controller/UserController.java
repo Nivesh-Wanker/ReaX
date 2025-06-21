@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,17 +30,19 @@ public class UserController {
     UserService service;
 
     
-    
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/getuser")
     public List<User> getAll(){
         return repo.findAll();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/getuserbyid/{id}")
      public void GetUserById(@PathVariable String id){
         service.GetuserById(id);
     }
     
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @DeleteMapping("/delete/{id}")
      public String deleteById(@PathVariable String id){
         repo.deleteById(id);
