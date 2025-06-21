@@ -1,6 +1,7 @@
 package com.example.backend.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,7 @@ public class AdminController {
 
     @Autowired
     AdminService service;
-
+        @PreAuthorize("hasRole('ADMIN')")
          @PostMapping("/addadmin")
         public void Createadmin(@RequestBody UserDto dto){
             service.addAdmin(dto);
