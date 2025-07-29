@@ -1,5 +1,6 @@
 package com.example.backend.service;
 import java.util.UUID;
+import java.util.List; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,10 @@ import com.example.backend.dto.UserDto;
 import com.example.backend.dto.UserLoginDTO;
 import com.example.backend.model.User;
 import com.example.backend.repository.UserRepository;
+import com.example.backend.repository.FormRepository;
+import com.example.backend.dto.DashboardDataDto;
+import com.example.backend.model.Form;
+
     @Service
     public class UserService{
     
@@ -20,6 +25,9 @@ import com.example.backend.repository.UserRepository;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private FormRepository formRepository;
 
     public User mapDtoUser(UserDto dto){
         User doc=new User();
@@ -74,7 +82,7 @@ import com.example.backend.repository.UserRepository;
     public ResponseDTO GetuserByEmail(UserLoginDTO dto){
         User user=  repo.findAll().stream()
         .filter(u -> u.getEmail().equals(dto.getEmail()) &&
-                     passwordEncoder.matches(dto.getPassword(), u.getPassword()))
+                    passwordEncoder.matches(dto.getPassword(), u.getPassword()))
         .findFirst()
         .orElse(null);
         ResponseDTO rdto= new ResponseDTO();
@@ -85,6 +93,35 @@ import com.example.backend.repository.UserRepository;
         rdto.setMessage("username or password incorrect");
     }
     return rdto;
+}
+
+    public DashboardDataDto getDashboardData(String email) {
+    User user = repo.findAll().stream()
+        .filter(u -> u.getEmail().equals(email))
+        .findFirst()
+        .orElse(null);
+
+    if (user == null) return null;
+
+    List<Form> forms = formRepository.findByUserId(user.getId());
+
+    DashboardDataDto dto = new DashboardDataDto();
+    dto.setTotalForms(forms.size());
+    dto.setTotalResponses(forms.stream().mapToInt(Form::getResponseCount).sum());
+    dto.setActiveForms((int) forms.stream().filter(f -> f.getStatus().equalsIgnoreCase("active")).count());
+
+    List<DashboardDataDto.FormSummary> summaries = forms.stream().map(form -> {
+        DashboardDataDto.FormSummary fs = new DashboardDataDto.FormSummary();
+        fs.setId(form.getId());
+        fs.setTitle(form.getTitle());
+        fs.setStatus(form.getStatus());
+        fs.setResponses(form.getResponseCount());
+        fs.setCreatedAt(form.getCreatedAt().toString());
+        return fs;
+    }).toList();
+
+    dto.setForms(summaries);
+    return dto;
 }
     }
 
