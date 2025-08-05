@@ -95,41 +95,32 @@ import com.example.backend.model.Form;
     return rdto;
 }
 
-    public DashboardDataDto getDashboardData(String email) {
-    User user = repo.findAll().stream()
-        .filter(u -> u.getEmail().equals(email))
-        .findFirst()
-        .orElse(null);
+//     public DashboardDataDto getDashboardData(String email) {
+//     User user = repo.findAll().stream()
+//         .filter(u -> u.getEmail().equals(email))
+//         .findFirst()
+//         .orElse(null);
 
-    if (user == null) return null;
+//     if (user == null) return null;
 
-    List<Form> forms = formRepository.findByUserId(user.getId());
+//     List<Form> forms = formRepository.findByUserId(user.getId());
 
-    DashboardDataDto dto = new DashboardDataDto();
-    dto.setTotalForms(forms.size());
-    dto.setTotalResponses(forms.stream().mapToInt(Form::getResponseCount).sum());
-    dto.setActiveForms((int) forms.stream().filter(f -> f.getStatus().equalsIgnoreCase("active")).count());
+//     DashboardDataDto dto = new DashboardDataDto();
+//     dto.setTotalForms(forms.size());
+//     dto.setTotalResponses(forms.stream().mapToInt(Form::getResponseCount).sum());
+//     dto.setActiveForms((int) forms.stream().filter(f -> f.getStatus().equalsIgnoreCase("active")).count());
 
-    List<DashboardDataDto.FormSummary> summaries = forms.stream().map(form -> {
-        DashboardDataDto.FormSummary fs = new DashboardDataDto.FormSummary();
-        fs.setId(form.getId());
-        fs.setTitle(form.getTitle());
-        fs.setStatus(form.getStatus());
-        fs.setResponses(form.getResponseCount());
-        fs.setCreatedAt(form.getCreatedAt().toString());
-        return fs;
-    }).toList();
+//     List<DashboardDataDto.FormSummary> summaries = forms.stream().map(form -> {
+//         DashboardDataDto.FormSummary fs = new DashboardDataDto.FormSummary();
+//         fs.setId(form.getId());
+//         fs.setTitle(form.getTitle());
+//         fs.setStatus(form.getStatus());
+//         fs.setResponses(form.getResponseCount());
+//         fs.setCreatedAt(form.getCreatedAt().toString());
+//         return fs;
+//     }).toList();
 
-    dto.setForms(summaries);
-    return dto;
-}
+//     dto.setForms(summaries);
+//     return dto;
+// }
     }
-
-
-// User:-
-// /register_user 
-// /login_user - send user object
-
-
-// Admin:-
-// /register_admin  - keep is_admin as true

@@ -52,15 +52,15 @@ public class UserController {
         return "deleted";
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    @GetMapping("/user/dashboard")
-    public ResponseEntity<?> getUserDashboard(@RequestParam String email) {
-        DashboardDataDto dashboard = service.getDashboardData(email);
+    // @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    // @GetMapping("/user/dashboard")
+    // public ResponseEntity<?> getUserDashboard(@RequestParam String email) {
+    //     DashboardDataDto dashboard = service.getDashboardData(email);
 
-        if (dashboard == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
+    //     if (dashboard == null) {
+    //         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+    //     }
 
-        return ResponseEntity.ok(dashboard);
-    }
+    //     return ResponseEntity.ok(dashboard);
+    // }
     }

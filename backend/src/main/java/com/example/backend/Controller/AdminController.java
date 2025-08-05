@@ -17,14 +17,12 @@ import com.example.backend.service.AdminService;
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 public class AdminController {
-
-
-
     @Autowired
     AdminService service;
-        @PreAuthorize("hasRole('ADMIN')")
-         @PostMapping("/addadmin")
-        public void Createadmin(@RequestBody UserDto dto){
-            service.addAdmin(dto);
-        }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/addadmin")
+    public void Createadmin(@RequestBody UserDto dto){
+        service.addAdmin(dto);
+    }
 }

@@ -32,7 +32,7 @@ public class securityConfig {
         .cors(cors -> {}) // Enables default CORS support
         .csrf(csrf -> csrf.disable()) // Disables CSRF
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/register", "/login").permitAll()
+            .requestMatchers("*").permitAll()
             .anyRequest().authenticated()
         )
         .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class)
