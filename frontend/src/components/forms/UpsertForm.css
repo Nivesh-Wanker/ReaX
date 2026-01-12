@@ -1,0 +1,323 @@
+.create-form-container {
+  max-width: 750px;
+  margin: auto;
+  padding: 30px;
+}
+
+body {
+  background: #ffffff; 
+  font-family: 'Inter', sans-serif;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #0a9396;
+  outline: none;
+  box-shadow: 0 0 3px #0a9396;
+  transition: box-shadow 0.2s ease;
+}
+
+
+.form-meta-card {
+  background-color: #ffffff;
+  border-top: 4px solid #0a9396;
+  padding: 32px 24px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(60,64,67,.3), 0 4px 8px rgba(60,64,67,.15);
+  margin-bottom: 20px;
+}
+
+.form-title-input {
+  width: 100%;
+  border: none;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #000000;
+  background: transparent;
+
+}
+
+.form-title-input:focus,
+.form-description-input:focus  {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+
+
+.form-description-input {
+  width: 100%;
+  border: none;
+  font-size: 1.2rem;
+  color: #5f6368;
+  background: transparent;
+}
+
+
+
+.form-title-input::placeholder {
+  color: #5f6368;
+  opacity: 1;
+}
+
+.form-description-input::placeholder {
+  color: #5f6368;
+  opacity: 1;
+}
+
+.question-list-wrapper {
+  position: relative;
+  z-index: 0;
+}
+
+.question-card {
+  background: #ffffff;
+  border-left: 4px solid #0a9396; /* Teal-ish like navbar */
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: all 0.2s ease-in-out;
+  overflow: visible;
+  position: relative;
+  z-index: 1;
+}
+.question-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size:x-large;
+  margin-bottom: 10px;
+}
+
+
+
+.question-input {
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid #0a9396;
+  padding: 8px 4px;
+  font-size: 1.2rem;
+  background: transparent;
+}
+
+.question-input:focus {
+  border-bottom: 2px solid #0a9396; /* Example teal color */
+}
+
+.react-select__single-value, .react-select__option {
+  display: flex;
+  align-items: center;
+}
+
+.react-select-container {
+  margin-top: 14px; 
+  position: relative;
+  z-index: 10;
+}
+
+.react-select__menu {
+  z-index: 9999 !important;
+  position: absolute !important;
+}
+
+
+
+.options-list {
+  margin-top: 10px;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.option-input {
+  flex: 1;
+  padding: 10px 15px;
+  font-size: 18px;
+  border: none;
+  border-bottom: 1.5px solid #ccc;
+  background-color: transparent;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.option-input:focus {
+  border-bottom: 2px solid #0a9396; /* Teal highlight on focus */
+}
+
+.option-input::placeholder {
+  color: #6c757d; /* subtle gray */
+  font-style: bold;
+  font-size: large;
+  opacity: 1; /* make sure it shows clearly */
+}
+
+.option-input:focus::placeholder {
+  color: #a0a0a0; /* even lighter when focused, optional */
+}
+
+
+
+.delete-icon-btn {
+  background: none;
+  border: none;
+  font-size:1.8rem; /* larger icon */
+  cursor: pointer;
+  color: #e63946;
+  margin-left: 10px;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.delete-icon-btn:hover {
+  transform: scale(1.2);
+  color: #b82d39; /* slightly darker on hover */
+}
+
+
+
+.add-option-btn {
+  background-color: #0a9396;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-top: 20px;
+  transition: all 0.2s ease;
+}
+
+.add-option-btn:hover {
+  background-color: #075e63;
+}
+
+.question-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+  gap: 12px;
+}
+
+
+.required-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.required-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: relative;
+  width: 50px;
+  height: 24px;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: 0.4s;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+.required-toggle input:checked + .slider {
+  background-color: #14b8a6;
+}
+
+.required-toggle input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.delete-option-btn {
+  background: #e63946;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-left: 5px; /* small space from input */
+  margin-top: 0px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.85rem;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.delete-option-btn:hover {
+  background: #d62839;
+  transform: scale(1.05);
+}
+
+.add-field-btn {
+  width: 100%;
+  background: linear-gradient(90deg, #0a9396, #0fbbaf);
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  margin-top: 24px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.add-field-btn:hover {
+  background: linear-gradient(90deg, #0077b6, #023e8a);
+}
+
+
+.form-action-buttons button {
+  padding: 10px 15px;
+  margin-right: 10px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* .save-form-btn {
+  background: linear-gradient(90deg, #28a745, #3ddc84);
+  color: white;
+}
+
+.preview-form-btn {
+  background: linear-gradient(90deg, #ff6600, #ff8533);
+  color: white;
+} */
+
+.save-form-btn,
+.preview-form-btn {
+  background-color: #0a9396;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-top: 20px;
+  transition: all 0.2s ease;
+}
+
+.save-form-btn:hover,
+.preview-form-btn:hover {
+  background-color: #075e63;
+}
+ 

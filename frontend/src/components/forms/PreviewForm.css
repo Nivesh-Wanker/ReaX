@@ -1,0 +1,135 @@
+body {
+  background: #ffffff; 
+  font-family: 'Inter', sans-serif;
+}
+
+.preview-container {
+  max-width: 700px;
+  margin: 50px auto;
+  padding: 30px;
+  background: linear-gradient(to right, #17978b, #38b49f);
+  border-radius: 16px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+.preview-container h2 {
+  margin-bottom: 5px;
+  font-size: 2rem;
+  color: #ffffff;
+}
+
+.preview-container p {
+  margin-bottom: 30px;
+  color: #e0f7f4;
+  font-size: 1.1rem;
+}
+
+.preview-item {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  margin-bottom: 25px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.preview-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.preview-item h5 {
+  margin-bottom: 6px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.preview-item label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #fff;
+  font-size: 1.25rem;
+}
+
+.preview-item label span.required {
+  color: red;
+  margin-left: 6px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.preview-item input[type="text"],
+.preview-item input[type="number"],
+.preview-item input[type="date"],
+.preview-item select,
+.preview-item textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #333;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.preview-item input:focus,
+.preview-item select:focus,
+.preview-item textarea:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(255, 183, 3, 0.5);
+}
+
+.preview-item textarea {
+  min-height: 90px;
+}
+
+.preview-item input[type="radio"],
+.preview-item input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+
+
+
+.rating-stars span {
+  font-size: 2rem;
+  cursor: pointer;
+  color: #ddd;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.rating-stars span.active {
+  color: #ffb703;
+}
+
+.rating-stars span:hover {
+  transform: scale(1.2);
+  color: #ffb703;
+}
+
+.rating-stars span.rating-value {
+  font-size: x-large ;
+  margin-left: 6px;
+  color: #fff;
+  font-weight: 600;
+}
+
+button {
+  padding: 12px 22px;
+  background-color: #e0f7f4;
+  color: #2a9d8f;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+button:hover {
+  background-color: #c5ede8;
+  transform: translateY(-2px);
+}
